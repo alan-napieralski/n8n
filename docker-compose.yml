@@ -4,6 +4,9 @@ services:
   caddy:
     image: caddy:latest
     restart: unless-stopped
+    environment:
+      - CADDY_BASIC_AUTH_USER=${CADDY_BASIC_AUTH_USER}
+      - CADDY_BASIC_AUTH_HASH=${CADDY_BASIC_AUTH_HASH}
     ports:
       - "80:80"
       - "443:443"
@@ -24,6 +27,9 @@ services:
       - NODE_ENV=production
       - WEBHOOK_URL=https://${SUBDOMAIN}.${DOMAIN_NAME}/
       - GENERIC_TIMEZONE=${GENERIC_TIMEZONE}
+      - N8N_BASIC_AUTH_ACTIVE=${N8N_BASIC_AUTH_ACTIVE}
+      - N8N_BASIC_AUTH_USER=${N8N_BASIC_AUTH_USER}
+      - N8N_BASIC_AUTH_PASSWORD=${N8N_BASIC_AUTH_PASSWORD}
     volumes:
       - n8n_data:/home/node/.n8n
       - ${DATA_FOLDER}/local_files:/files

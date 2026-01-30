@@ -1,5 +1,21 @@
 n8n.alannap.com {
-    reverse_proxy n8n:5678 {
-      flush_interval -1
+    @webhooks {
+        path /webhook/* /webhook-test/*
+    }
+
+    handle @webhooks {
+        reverse_proxy n8n:5678 {
+            flush_interval -1
+        }
+    }
+
+    handle {
+        basicauth {
+            {$CADDY_BASIC_AUTH_USER} {$CADDY_BASIC_AUTH_HASH}
+        }
+
+        reverse_proxy n8n:5678 {
+            flush_interval -1
+        }
     }
 }
